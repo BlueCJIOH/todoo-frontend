@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "todoo-front": {
+    "todoo-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "todoo-front:build:production"
+              "buildTarget": "todoo-frontend:build:production"
             },
             "development": {
-              "buildTarget": "todoo-front:build:development"
+              "buildTarget": "todoo-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
