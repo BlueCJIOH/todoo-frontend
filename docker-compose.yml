@@ -1,0 +1,16 @@
+services:
+  todoo-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "4200"
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true

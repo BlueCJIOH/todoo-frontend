@@ -1,0 +1,16 @@
+services:
+  todoo-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "127.0.0.1:4200:4200"
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
