@@ -1,5 +1,10 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "schematics": {
+    "@schematics/angular:component": {
+      "flat": false
+    }
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -7,7 +12,26 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "flat": false,
+          "type": "component",
+          "standalone": true
+        },
+        "@schematics/angular:service": {
+          "flat": false,
+          "type": "service"
+        },
+        "@schematics/angular:guard": {
+          "flat": false
+        },
+        "@schematics/angular:pipe": {
+          "flat": false,
+          "standalone": true
+        },
+        "@schematics/angular:directive": {
+          "flat": false,
+          "type": "directive",
+          "standalone": true
         }
       },
       "root": "",
