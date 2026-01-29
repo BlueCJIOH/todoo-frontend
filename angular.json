@@ -83,6 +83,13 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "allowedHosts": [
+              "todoo.nikitonz.com",
+              "localhost",
+              "127.0.0.1"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "todoo-frontend:build:production"
@@ -120,3 +127,4 @@
     }
   }
 }
+

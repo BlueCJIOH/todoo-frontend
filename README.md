@@ -2,6 +2,33 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.5.
 
+## Quickstart
+1. Copy environment template
+```bash
+cp .env.example .env
+```
+
+2. Start
+  - Production 
+```bash
+docker compose up -d --build
+```
+
+  - Local
+```bash
+docker compose -f docker-compose-local.yml up -d --build
+```
+
+3. Stop
+```bash
+docker compose down
+```
+or with an indication of a specific file
+```bash
+docker compose -f docker-compose-local.yml down
+```
+(in case of local development)
+
 ## Development server
 
 To start a local development server, run:
@@ -57,3 +84,4 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
