@@ -1,31 +1,31 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-login-form',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
+    CommonModule,
+    NgOptimizedImage,
+    FormsModule,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
-  form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6)])
-  });
+  hidePassword = true;
+  loginError: string | null = null;
 
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('Login data:', this.form.value);
-      // Здесь будет dispatch или вызов сервиса
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
+  }
+
+  onSubmit(email: string, password: string) {
+    this.loginError = null;
+    if(password === '1234') {
+      this.loginError = 'Неверный логин или пароль'
     }
+    console.log('Login data:', { email, password });
   }
 }
