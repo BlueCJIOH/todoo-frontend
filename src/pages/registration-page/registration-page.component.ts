@@ -34,7 +34,7 @@ export class RegistrationPageComponent {
     ]),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(6),
+      Validators.minLength(8),
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/)
     ]),
     confirmPassword: new FormControl('', [
@@ -130,7 +130,7 @@ export class RegistrationPageComponent {
       return 'Пароль обязателен для заполнения';
     }
     if (this.password?.hasError('minlength')) {
-      return 'Пароль должен быть не менее 6 символов';
+      return 'Пароль должен быть не менее 8 символов';
     }
     if (this.password?.hasError('pattern')) {
       return 'Пароль должен содержать заглавную букву, строчную букву и цифру';

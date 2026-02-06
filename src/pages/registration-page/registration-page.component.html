@@ -9,7 +9,7 @@
         <h1 class="text-2xl font-bold text-center mb-6 text-blue-600">Регистрация</h1>
 
         <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="space-y-5">
-          <!-- Поле Имя -->
+
           <div class="space-y-1">
             <label for="name" class="block text-sm font-medium text-gray-700">Имя</label>
             <input
@@ -19,12 +19,11 @@
               placeholder="Введите ваше имя"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
             />
-            <div *ngIf="name?.invalid || name?.dirty" class="text-red-600 text-xs mt-1">
+            <div *ngIf="name?.invalid && name?.touched" class="text-red-600 text-xs mt-1">
               {{ getNameErrorMessage() }}
             </div>
           </div>
 
-          <!-- Поле Email -->
           <div class="space-y-1">
             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
             <input
@@ -34,12 +33,11 @@
               placeholder="Введите email"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
             />
-            <div *ngIf="email?.invalid || email?.dirty" class="text-red-600 text-xs mt-1">
+            <div *ngIf="email?.invalid && email?.touched" class="text-red-600 text-xs mt-1">
               {{ getEmailErrorMessage() }}
             </div>
           </div>
 
-          <!-- Поле Пароль -->
           <div class="space-y-1 relative">
             <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
             <div class="relative">
@@ -61,12 +59,11 @@
                      class="w-5 h-5" height="28" width="28" />
               </button>
             </div>
-            <div *ngIf="password?.invalid || password?.dirty" class="text-red-600 text-xs mt-1">
+            <div *ngIf="password?.invalid && password?.touched" class="text-red-600 text-xs mt-1">
               {{ getPasswordErrorMessage() }}
             </div>
           </div>
 
-          <!-- Поле Подтверждение пароля -->
           <div class="space-y-1 relative">
             <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Повторите пароль</label>
             <div class="relative">
@@ -88,12 +85,11 @@
                      class="w-5 h-5" height="28" width="28" />
               </button>
             </div>
-            <div *ngIf="confirmPassword?.invalid || confirmPassword?.dirty" class="text-red-600 text-xs mt-1">
+            <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="text-red-600 text-xs mt-1">
               {{ getConfirmPasswordErrorMessage() }}
             </div>
           </div>
 
-          <!-- Кнопка регистрации -->
           <button
             type="submit"
             [disabled]="registrationForm.invalid"
@@ -102,12 +98,10 @@
             Зарегистрироваться
           </button>
 
-          <!-- Ошибка -->
           <div *ngIf="registrationError" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
             {{ registrationError }}
           </div>
 
-          <!-- Ссылка на вход -->
           <div class="text-center">
             <div class="text-sm font-medium text-black">
               Уже есть аккаунт?
