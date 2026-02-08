@@ -2,14 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
-
-// Интерфейс для данных формы
-interface RegistrationFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { RegistrationFormData } from '../../shared/model/types/auth.model';
 
 @Component({
   selector: 'app-registration-form',
@@ -107,6 +100,21 @@ export class RegistrationPageComponent {
 
     // Здесь можно добавить логику отправки данных на сервер
     // this.authService.register(formData).subscribe(...);
+  }
+
+  public isEmailInvalid(): boolean {
+    const control = this.email;
+    return !!control && control.invalid;
+  }
+
+  public isEmailTouched(): boolean {
+    const control = this.email;
+    return !control && control.touched;
+  }
+
+  public isEmailDirty(): boolean {
+    const control = this.email;
+    return !!control && control.dirty;
   }
 
   /**

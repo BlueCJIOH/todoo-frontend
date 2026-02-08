@@ -57,21 +57,6 @@ export class ForgotPasswordPageComponent implements OnInit {
     return this.forgotPasswordForm.get('email');
   }
 
-  public isEmailInvalid(): boolean {
-    const control = this.email;
-    return !!control && control.invalid;
-  }
-
-  public isEmailTouched(): boolean {
-    const control = this.email;
-    return !!control && control.touched;
-  }
-
-  public isEmailDirty(): boolean {
-    const control = this.email;
-    return !!control && control.dirty;
-  }
-
   public goBackToLogin(): void {
     const email = this.forgotPasswordForm.get('email')?.value;
     if (email) {
