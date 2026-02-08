@@ -19,9 +19,11 @@
               placeholder="Введите ваше имя"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
             />
-            <div *ngIf="name?.invalid && name?.touched" class="text-red-600 text-xs mt-1">
-              {{ getNameErrorMessage() }}
-            </div>
+            @if(name?.invalid && name?.touched) {
+              <div class="text-red-600 text-xs mt-1">
+                {{ getNameErrorMessage() }}
+              </div>
+            }
           </div>
 
           <div class="space-y-1">
@@ -33,9 +35,11 @@
               placeholder="Введите email"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
             />
-            <div *ngIf="email?.invalid && email?.touched" class="text-red-600 text-xs mt-1">
-              {{ getEmailErrorMessage() }}
-            </div>
+            @if (email?.invalid && email?.touched) {
+              <div class="text-red-600 text-xs mt-1">
+                {{ getEmailErrorMessage() }}
+              </div>
+            }
           </div>
 
           <div class="space-y-1 relative">
@@ -44,7 +48,7 @@
               <input
                 formControlName="password"
                 id="password"
-                [type]="hidePassword ? 'password' : 'text'"
+                [type]="isPasswordHidden ? 'password' : 'text'"
                 placeholder="Введите пароль"
                 class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
               />
@@ -53,15 +57,20 @@
                 (click)="togglePasswordVisibility()"
                 class="focus:outline-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
-                <img *ngIf="!hidePassword" ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
-                     class="w-5 h-5" height="28" width="28" />
-                <img *ngIf="hidePassword" ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
-                     class="w-5 h-5" height="28" width="28" />
+                @if(isPasswordHidden) {
+                  <img ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                } @else {
+                  <img ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                }
               </button>
             </div>
-            <div *ngIf="password?.invalid && password?.touched" class="text-red-600 text-xs mt-1">
-              {{ getPasswordErrorMessage() }}
-            </div>
+            @if(password?.invalid && password?.touched) {
+              <div class="text-red-600 text-xs mt-1">
+                {{ getPasswordErrorMessage() }}
+              </div>
+            }
           </div>
 
           <div class="space-y-1 relative">
@@ -70,7 +79,7 @@
               <input
                 formControlName="confirmPassword"
                 id="confirmPassword"
-                [type]="hideConfirmPassword ? 'password' : 'text'"
+                [type]="isConfirmPasswordHidden ? 'password' : 'text'"
                 placeholder="Повторите пароль"
                 class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
               />
@@ -79,15 +88,20 @@
                 (click)="toggleConfirmPasswordVisibility()"
                 class="focus:outline-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
-                <img *ngIf="!hideConfirmPassword" ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
-                     class="w-5 h-5" height="28" width="28" />
-                <img *ngIf="hideConfirmPassword" ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
-                     class="w-5 h-5" height="28" width="28" />
+                @if(isConfirmPasswordHidden) {
+                  <img ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                } @else {
+                  <img ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                }
               </button>
             </div>
-            <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="text-red-600 text-xs mt-1">
-              {{ getConfirmPasswordErrorMessage() }}
-            </div>
+            @if(confirmPassword?.invalid && confirmPassword?.touched) {
+              <div class="text-red-600 text-xs mt-1">
+                {{ getConfirmPasswordErrorMessage() }}
+              </div>
+            }
           </div>
 
           <button
@@ -98,14 +112,16 @@
             Зарегистрироваться
           </button>
 
-          <div *ngIf="registrationError" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {{ registrationError }}
-          </div>
+          @if(registrationError) {
+            <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {{ registrationError }}
+            </div>
+          }
 
           <div class="text-center">
             <div class="text-sm font-medium text-black">
-              Уже есть аккаунт?
-              <a href="/login" class="text-sm font-medium text-blue-600 hover:text-blue-700">Войдите!</a>
+              Уже зарегистрированы?
+              <a href="/login" class="text-sm font-medium text-blue-600 hover:text-blue-700">Войдите в аккаунт!</a>
             </div>
           </div>
         </form>

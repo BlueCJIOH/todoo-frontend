@@ -35,21 +35,28 @@
                 (click)="togglePasswordVisibility()"
                 class="focus:outline-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
               >
-                <img *ngIf="!hidePassword" ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
-                     class="w-5 h-5" height="28" width="28" />
-                <img *ngIf="hidePassword" ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
-                     class="w-5 h-5" height="28" width="28" />
+                @if(hidePassword) {
+                  <img ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                } @else {
+                  <img ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
+                       class="w-5 h-5" height="28" width="28" />
+                }
               </button>
             </div>
           </div>
 
-          <div class="text-left">
-            <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">Забыли пароль?</a>
+          <div class="space-y-1 relative">
+            <a (click)="goToForgotPassword(emailInput)"
+               class="text-sm font-medium text-blue-600 hover:text-blue-700 cursor-pointer"
+            >Забыли пароль?</a>
           </div>
 
-          <div *ngIf="loginError" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {{ loginError }}
-          </div>
+          @if(loginError) {
+            <div class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              {{ loginError }}
+            </div>
+          }
 
           <button
             type="submit"
