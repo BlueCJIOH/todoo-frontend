@@ -60,9 +60,9 @@ export class ForgotPasswordPageComponent implements OnInit {
   public goBackToLogin(): void {
     const email = this.forgotPasswordForm.get('email')?.value;
     if (email) {
-      this.router.navigate(['/login'], { queryParams: { email: email } });
-    } else {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {queryParams: {email: email}}).then();
+     } else {
+      this.router.navigate(['/login']).then();
     }
   }
 

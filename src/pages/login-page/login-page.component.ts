@@ -28,10 +28,10 @@ export class LoginPageComponent {
     const email = emailInput.value.trim();
     if (email) {
       this.router.navigate(['/forgot-password'], {
-        queryParams: { email: email }
-      });
+        queryParams: {email: email}
+      }).then();
     } else {
-      this.router.navigate(['/forgot-password']);
+      this.router.navigate(['/forgot-password']).then();
     }
   }
 

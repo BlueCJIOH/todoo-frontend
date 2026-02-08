@@ -102,21 +102,6 @@ export class RegistrationPageComponent {
     // this.authService.register(formData).subscribe(...);
   }
 
-  public isEmailInvalid(): boolean {
-    const control = this.email;
-    return !!control && control.invalid;
-  }
-
-  public isEmailTouched(): boolean {
-    const control = this.email;
-    return !control && control.touched;
-  }
-
-  public isEmailDirty(): boolean {
-    const control = this.email;
-    return !!control && control.dirty;
-  }
-
   /**
    * Пометить все поля как затронутые для показа ошибок
    * @private
