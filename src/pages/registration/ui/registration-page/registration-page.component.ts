@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
-import { RegistrationFormData } from '../../shared/model/types/auth.model';
+import { RegistrationFormData } from '../../../../shared/model/types/auth.model';
 
 @Component({
   selector: 'app-registration-form',

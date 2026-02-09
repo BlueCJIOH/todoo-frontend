@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from '../pages/home-page/home-page.component';
-import { LoginPageComponent } from '../pages/login-page/login-page.component.js'
-import { RegistrationPageComponent } from '../pages/registration-page/registration-page.component';
-import { NotFoundPageComponent } from '../pages/not-found-page/not-found-page.component';
-import { ForgotPasswordPageComponent } from '../pages/forgot-password-page/forgot-password-page.component';
+import { HomePageComponent } from '../pages/home/ui/home-page/home-page.component';
+import { LoginPageComponent } from '../pages/login/ui/login-page/login-page.component.js'
+import { RegistrationPageComponent } from '../pages/registration/ui/registration-page/registration-page.component';
+import { NotFoundPageComponent } from '../pages/not-found/ui/not-found-page/not-found-page.component';
+import { ForgotPasswordPageComponent } from '../pages/forgot-password/ui/forgot-password-page/forgot-password-page.component';
 
 export const routes: Routes = [
   {
