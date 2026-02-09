@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
   selector: 'app-login-form',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
-    NgOptimizedImage,
-  ],
+    NgOptimizedImage
+],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })

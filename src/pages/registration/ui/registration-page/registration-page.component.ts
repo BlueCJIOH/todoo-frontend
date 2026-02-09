@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 import { RegistrationFormData } from '../../../../shared/model/types/auth.model';
@@ -8,11 +8,10 @@ import { RegistrationFormData } from '../../../../shared/model/types/auth.model'
   selector: 'app-registration-form',
   standalone: true,
   imports: [
-    CommonModule,
     NgOptimizedImage,
     FormsModule,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss',
 })
