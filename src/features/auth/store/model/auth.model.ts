@@ -1,4 +1,4 @@
-import { User } from "./user.model";
+import { User } from "./types/user.model";
 
 export interface RegistrationFormData {
   name: string;
