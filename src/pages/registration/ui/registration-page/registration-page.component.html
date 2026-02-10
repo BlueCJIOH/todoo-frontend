@@ -1,0 +1,177 @@
+<!-- src/app/components/registration/registration-page.component.html -->
+
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-gray-50 bg-opacity-60">
+  <div class="w-full max-w-md mx-4">
+    <div class="relative">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-lime-200 to-lime-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:rotate-6 sm:rounded-3xl -z-10">
+      </div>
+
+      <div class="bg-white rounded-xl shadow-2xl p-8 border border-blue-300 relative z-10">
+        <h1 class="text-2xl font-bold text-center mb-6 text-blue-600">Регистрация</h1>
+
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="space-y-5">
+
+          <!-- Индикатор загрузки -->
+          @if(isLoading$ | async) {
+            <div class="flex items-center justify-center py-4">
+              <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
+              <span class="text-blue-600 font-medium">Регистрация...</span>
+            </div>
+          }
+
+          <!-- Сообщение об успехе -->
+          @if(registrationSuccess$ | async) {
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium">✅ Регистрация успешно завершена!</span>
+              </div>
+              <button
+                type="button"
+                (click)="onResetForm()"
+                class="mt-3 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm font-medium"
+              >
+                Зарегистрировать ещё
+              </button>
+            </div>
+          }
+
+          <!-- Сообщение об ошибке от сервера -->
+          @if(registrationError$ | async; as serverError) {
+            <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+              <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium">{{ serverError }}</span>
+              </div>
+            </div>
+          }
+
+          <!-- Форма регистрации (скрывается при успехе) -->
+          @if(!(registrationSuccess$ | async)) {
+            <div class="space-y-1">
+              <label for="name" class="block text-sm font-medium text-gray-700">Имя</label>
+              <input
+                formControlName="name"
+                id="name"
+                type="text"
+                placeholder="Введите ваше имя"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
+                [class.border-red-500]="name?.invalid && name?.touched"
+              />
+              @if(name?.invalid && name?.touched) {
+                <div class="text-red-600 text-xs mt-1">
+                  {{ getNameErrorMessage() }}
+                </div>
+              }
+            </div>
+
+            <div class="space-y-1">
+              <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                formControlName="email"
+                id="email"
+                type="email"
+                placeholder="Введите email"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
+                [class.border-red-500]="email?.invalid && email?.touched"
+              />
+              @if (email?.invalid && email?.touched) {
+                <div class="text-red-600 text-xs mt-1">
+                  {{ getEmailErrorMessage() }}
+                </div>
+              }
+            </div>
+
+            <div class="space-y-1 relative">
+              <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+              <div class="relative">
+                <input
+                  formControlName="password"
+                  id="password"
+                  [type]="isPasswordHidden ? 'password' : 'text'"
+                  placeholder="Введите пароль"
+                  class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
+                  [class.border-red-500]="password?.invalid && password?.touched"
+                />
+                <button
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  class="focus:outline-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                >
+                  @if(isPasswordHidden) {
+                    <img ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
+                         class="w-5 h-5" height="28" width="28" />
+                  } @else {
+                    <img ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
+                         class="w-5 h-5" height="28" width="28" />
+                  }
+                </button>
+              </div>
+              @if(password?.invalid && password?.touched) {
+                <div class="text-red-600 text-xs mt-1">
+                  {{ getPasswordErrorMessage() }}
+                </div>
+              }
+            </div>
+
+            <div class="space-y-1 relative">
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Повторите пароль</label>
+              <div class="relative">
+                <input
+                  formControlName="confirmPassword"
+                  id="confirmPassword"
+                  [type]="isConfirmPasswordHidden ? 'password' : 'text'"
+                  placeholder="Повторите пароль"
+                  class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-gray-700"
+                  [class.border-red-500]="confirmPassword?.invalid && confirmPassword?.touched"
+                />
+                <button
+                  type="button"
+                  (click)="toggleConfirmPasswordVisibility()"
+                  class="focus:outline-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
+                >
+                  @if(isConfirmPasswordHidden) {
+                    <img ngSrc="assets/icons/eye.svg" alt="Скрыть пароль"
+                         class="w-5 h-5" height="28" width="28" />
+                  } @else {
+                    <img ngSrc="assets/icons/eye-closed.svg" alt="Показать пароль"
+                         class="w-5 h-5" height="28" width="28" />
+                  }
+                </button>
+              </div>
+              @if(confirmPassword?.invalid && confirmPassword?.touched) {
+                <div class="text-red-600 text-xs mt-1">
+                  {{ getConfirmPasswordErrorMessage() }}
+                </div>
+              }
+            </div>
+
+            <button
+              type="submit"
+              [disabled]="registrationForm.invalid || (isLoading$ | async)"
+              class="w-full py-3 px-4 text-sm font-semibold rounded-lg shadow-md transition-colors duration-200 bg-lime-400 text-black hover:bg-lime-500 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              @if(isLoading$ | async) {
+                <span>Отправка...</span>
+              } @else {
+                <span>Зарегистрироваться</span>
+              }
+            </button>
+          }
+
+          <div class="text-center">
+            <div class="text-sm font-medium text-black">
+              Уже зарегистрированы?
+              <a href="/login" class="text-sm font-medium text-blue-600 hover:text-blue-700">Войдите в аккаунт!</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
