@@ -7,6 +7,7 @@ import { RegistrationRequest, RegistrationResponse } from '../store/model/auth.m
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   private readonly AUTH_API_URL = '/api/v1/auth';
   constructor( private http: HttpClient ) {}

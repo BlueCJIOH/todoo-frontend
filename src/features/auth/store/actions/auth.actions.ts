@@ -3,7 +3,7 @@ import { RegistrationRequest, RegistrationResponse } from '../model/auth.model';
 
 export const register = createAction(
     '[Auth] Register',
-    props<{ response: RegistrationRequest }>()
+    props<{ credentials: RegistrationRequest }>()
 );
 
 export const registerSuccess = createAction(

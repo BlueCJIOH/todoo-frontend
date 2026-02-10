@@ -2,8 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import { initialAuthState, AuthState } from '../model/auth.model';
 import * as AuthActions from '../actions/auth.actions';
 
-export const authFeatureKey = 'auth';
-
 export const authReducer = createReducer(
     initialAuthState,
 
@@ -33,5 +31,5 @@ export const authReducer = createReducer(
         registrationSuccess: false,
         registrationError: null
     })),
-    
+
 );

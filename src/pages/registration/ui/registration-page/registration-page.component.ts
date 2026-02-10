@@ -1,8 +1,15 @@
-import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
-import { RegistrationFormData } from '../../../../features/auth/store/model/auth.model';
+// src/app/components/registration/registration-page.component.ts
+
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgOptimizedImage, AsyncPipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable, Subject, takeUntil } from 'rxjs';
+
+import * as AuthActions from '../../../../features/auth/store/actions/auth.actions';
+import * as AuthSelectors from '../../../../features/auth/store/selectors/auth.selectors';
+import { RegistrationRequest } from '../../../../features/auth/store/model/auth.model';
 
 @Component({
   selector: 'app-registration-form',
@@ -10,15 +17,21 @@ import { RegistrationFormData } from '../../../../features/auth/store/model/auth
   imports: [
     NgOptimizedImage,
     FormsModule,
-    ReactiveFormsModule
-],
+    ReactiveFormsModule,
+    AsyncPipe
+  ],
   templateUrl: './registration-page.component.html',
   styleUrl: './registration-page.component.scss',
 })
-export class RegistrationPageComponent {
+export class RegistrationPageComponent implements OnInit, OnDestroy {
   private hidePassword: boolean = true;
   private hideConfirmPassword: boolean = true;
-  public registrationError: string | null = null;
+  private destroy$ = new Subject<void>();
+
+  // Состояние из Store
+  isLoading$: Observable<boolean>;
+  registrationSuccess$: Observable<boolean>;
+  registrationError$: Observable<string | null>;
 
   public registrationForm: FormGroup<{
     name: FormControl<string>;
@@ -57,6 +70,30 @@ export class RegistrationPageComponent {
     })
   });
 
+  constructor(private store: Store) {
+    // Подписываемся на состояние из Store
+    this.isLoading$ = this.store.select(AuthSelectors.selectIsLoading);
+    this.registrationSuccess$ = this.store.select(AuthSelectors.selectRegistrationSuccess);
+    this.registrationError$ = this.store.select(AuthSelectors.selectRegistrationError);
+  }
+
+  ngOnInit(): void {
+    // Подписываемся на успешную регистрацию
+    this.registrationSuccess$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(success => {
+        if (success) {
+          console.log('Registration successful!');
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    // Отписываемся от всех подписок
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   /**
    * Переключение видимости пароля
    */
@@ -74,31 +111,41 @@ export class RegistrationPageComponent {
   /**
    * Обработка отправки формы
    */
-  public onSubmit(): void {
-    this.registrationError = null;
+/**
+ * Обработка отправки формы
+ */
+public onSubmit(): void {
+  if (this.registrationForm.invalid) {
+    this.markAllAsTouched();
+    return;
+  }
 
-    if (this.registrationForm.invalid) {
-      this.markAllAsTouched();
-      this.registrationError = 'Пожалуйста, исправьте ошибки в форме';
-      return;
-    }
+  // Проверка совпадения паролей
+  const password = this.registrationForm.get('password')?.value;
+  const confirmPassword = this.registrationForm.get('confirmPassword')?.value;
 
-    // Проверка совпадения паролей
-    const password = this.registrationForm.get('password')?.value;
-    const confirmPassword = this.registrationForm.get('confirmPassword')?.value;
+  if (password !== confirmPassword) {
+    this.registrationForm.get('confirmPassword')?.setErrors({ mismatch: true } as ValidationErrors);
+    return;
+  }
 
-    if (password !== confirmPassword) {
-      this.registrationForm.get('confirmPassword')?.setErrors({ mismatch: true } as ValidationErrors);
-      this.registrationError = 'Пароли не совпадают';
-      return;
-    }
+  // ✅ Используем ! (non-null assertion) или ?? '' для гарантии типа string
+  const formData: RegistrationRequest = {
+    username: this.registrationForm.get('name')!.value,
+    email: this.registrationForm.get('email')!.value,
+    password: this.registrationForm.get('password')!.value
+  };
 
-    const formData: RegistrationFormData = this.registrationForm.value as RegistrationFormData;
+  // Dispatch действия в Store
+  this.store.dispatch(AuthActions.register({ credentials: formData }));
+}
 
-    console.log('Registration data:', formData);
-
-    // Здесь можно добавить логику отправки данных на сервер
-    // this.authService.register(formData).subscribe(...);
+  /**
+   * Сброс состояния после успешной регистрации
+   */
+  public onResetForm(): void {
+    this.store.dispatch(AuthActions.resetRegistrationState());
+    this.registrationForm.reset();
   }
 
   /**
