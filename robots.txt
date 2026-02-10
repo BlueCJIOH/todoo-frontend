@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+#Host: todoo.nikitonz.com
+#Sitemap: https://todoo.nikitonz.com/sitemap.xml
