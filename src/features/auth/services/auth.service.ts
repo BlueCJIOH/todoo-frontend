@@ -9,7 +9,7 @@ import { RegistrationRequest, RegistrationResponse } from '../store/model/auth.m
 })
 
 export class AuthService {
-  private readonly AUTH_API_URL = '/api/v1/auth';
+  private readonly AUTH_API_URL = 'https://todoo.nikitonz.com/api/v1/auth';
   constructor( private http: HttpClient ) {}
 
   public register(credentials: RegistrationRequest): Observable<RegistrationResponse> {
