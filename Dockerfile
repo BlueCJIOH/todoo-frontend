@@ -1,20 +1,14 @@
-# STAGE 1: Сборка
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --silent
-COPY . .
-RUN npm run build -- --configuration production
-
-# STAGE 2: Запуск
 FROM node:20-alpine
 
 WORKDIR /app
-RUN npm install -g serve
 
-COPY --from=builder /app/dist/test-front /app/public
+COPY package*.json ./
+RUN npm cache clean --force
+RUN npm install --silent
+RUN npm install -g @angular/cli
 
-EXPOSE 3000
+COPY . .
 
-CMD ["serve", "-s", "public", "-l", "3000"]
+EXPOSE 4200
+
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200"]
