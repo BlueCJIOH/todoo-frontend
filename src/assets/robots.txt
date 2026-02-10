@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /node_modules
+Disallow: /.angular
+Disallow: /*.ts$
+Disallow: /*.spec.ts$
+Disallow: /*.map$
 #Host: todoo.nikitonz.com
 #Sitemap: https://todoo.nikitonz.com/sitemap.xml
