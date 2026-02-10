@@ -3,7 +3,8 @@ FROM node:20-alpine
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --silent
+RUN npm cache clean --force
+RUN npm install --silent
 RUN npm install -g @angular/cli
 
 COPY . .
