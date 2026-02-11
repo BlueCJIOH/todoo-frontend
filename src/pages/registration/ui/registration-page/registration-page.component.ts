@@ -10,6 +10,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import * as AuthActions from '../../../../features/auth/store/actions/auth.actions';
 import * as AuthSelectors from '../../../../features/auth/store/selectors/auth.selectors';
 import { RegistrationRequest } from '../../../../features/auth/store/model/auth.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration-form',
@@ -30,8 +31,12 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
   // Состояние из Store
   isLoading$: Observable<boolean>;
+  //isVerifying$: Observable<boolean>;
   registrationSuccess$: Observable<boolean>;
+  //verificationSuccess$: Observable<boolean>;
   registrationError$: Observable<string | null>;
+  //verificationError$: Observable<string | null>;
+  //isAuthenticated$: Observable<boolean>;
 
   public registrationForm: FormGroup<{
     name: FormControl<string>;
@@ -70,15 +75,13 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     })
   });
 
-  constructor(private store: Store) {
-    // Подписываемся на состояние из Store
+  constructor(private store: Store, private route: ActivatedRoute) {
     this.isLoading$ = this.store.select(AuthSelectors.selectIsLoading);
     this.registrationSuccess$ = this.store.select(AuthSelectors.selectRegistrationSuccess);
     this.registrationError$ = this.store.select(AuthSelectors.selectRegistrationError);
   }
 
-  ngOnInit(): void {
-    // Подписываемся на успешную регистрацию
+  public ngOnInit(): void {
     this.registrationSuccess$
       .pipe(takeUntil(this.destroy$))
       .subscribe(success => {
@@ -86,10 +89,32 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
           console.log('Registration successful!');
         }
       });
+
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        const verifyToken = params['token'];
+        if (verifyToken) {
+          // Dispatch верификации
+          this.store.dispatch(AuthActions.verify({ verifyToken }));
+        }
+      });
+
+    // ✅ Перенаправление после успешной верификации
+    // this.verificationSuccess$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(success => {
+    //     if (success) {
+    //       console.log('Verification successful!');
+    //       // Перенаправляем на главную или дашборд
+    //       setTimeout(() => {
+    //         this.router.navigate(['/']);
+    //       }, 2000);
+    //     }
+    //   });
   }
 
-  ngOnDestroy(): void {
-    // Отписываемся от всех подписок
+  public ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -111,34 +136,31 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
   /**
    * Обработка отправки формы
    */
-/**
- * Обработка отправки формы
- */
-public onSubmit(): void {
-  if (this.registrationForm.invalid) {
-    this.markAllAsTouched();
-    return;
+  /**
+   * Обработка отправки формы
+   */
+  public onSubmit(): void {
+    if (this.registrationForm.invalid) {
+      this.markAllAsTouched();
+      return;
+    }
+
+    const password = this.registrationForm.get('password')?.value;
+    const confirmPassword = this.registrationForm.get('confirmPassword')?.value;
+
+    if (password !== confirmPassword) {
+      this.registrationForm.get('confirmPassword')?.setErrors({ mismatch: true } as ValidationErrors);
+      return;
+    }
+
+    const formData: RegistrationRequest = {
+      username: this.registrationForm.get('name')!.value,
+      email: this.registrationForm.get('email')!.value,
+      password: this.registrationForm.get('password')!.value
+    };
+
+    this.store.dispatch(AuthActions.register({ credentials: formData }));
   }
-
-  // Проверка совпадения паролей
-  const password = this.registrationForm.get('password')?.value;
-  const confirmPassword = this.registrationForm.get('confirmPassword')?.value;
-
-  if (password !== confirmPassword) {
-    this.registrationForm.get('confirmPassword')?.setErrors({ mismatch: true } as ValidationErrors);
-    return;
-  }
-
-  // ✅ Используем ! (non-null assertion) или ?? '' для гарантии типа string
-  const formData: RegistrationRequest = {
-    username: this.registrationForm.get('name')!.value,
-    email: this.registrationForm.get('email')!.value,
-    password: this.registrationForm.get('password')!.value
-  };
-
-  // Dispatch действия в Store
-  this.store.dispatch(AuthActions.register({ credentials: formData }));
-}
 
   /**
    * Сброс состояния после успешной регистрации

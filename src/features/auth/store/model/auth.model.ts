@@ -29,6 +29,12 @@ export interface LoginResponse {
 }
 
 
+export interface VerificationResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+}
+
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
@@ -38,6 +44,9 @@ export interface AuthState {
   error: string | null;
   registrationSuccess: boolean;
   registrationError: string | null;
+  isVerifying: boolean;
+  verificationSuccess: boolean;
+  verificationError: string | null;
 }
 
 export const initialAuthState: AuthState = {
@@ -48,5 +57,8 @@ export const initialAuthState: AuthState = {
   isLoading: false,
   error: null,
   registrationSuccess: false,
-  registrationError: null
+  registrationError: null,
+  isVerifying: false,
+  verificationSuccess: false,
+  verificationError: null
 };

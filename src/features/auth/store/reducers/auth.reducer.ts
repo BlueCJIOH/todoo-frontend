@@ -32,4 +32,34 @@ export const authReducer = createReducer(
         registrationError: null
     })),
 
+    on(AuthActions.verify, (state): AuthState => ({
+        ...state,
+        isVerifying: true,
+        verificationError: null,
+        verificationSuccess: false
+      })),
+    
+      on(AuthActions.verifySuccess, (state, { response }): AuthState => ({
+        ...state,
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+        isAuthenticated: true,
+        isVerifying: false,
+        verificationSuccess: true,
+        verificationError: null
+      })),
+    
+      on(AuthActions.verifyFailure, (state, { error }): AuthState => ({
+        ...state,
+        isVerifying: false,
+        verificationSuccess: false,
+        verificationError: error
+      })),
+    
+      on(AuthActions.resetVerificationState, (state): AuthState => ({
+        ...state,
+        verificationSuccess: false,
+        verificationError: null
+      }))
+
 );

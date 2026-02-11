@@ -26,6 +26,20 @@ export class AuthEffects {
     );
   });
 
+  verify$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.verify),
+      switchMap((action) =>
+        this.authService.verifyRegistration(action.verifyToken).pipe(
+          map(response => AuthActions.verifySuccess({ response })),
+          catchError(error =>
+            of(AuthActions.verifyFailure({ error: this.getErrorMessage(error) }))
+          )
+        )
+      )
+    );
+  });
+
   private getErrorMessage(error: any): string {
     if (error.error instanceof ErrorEvent) {
       return 'Ошибка сети: ' + error.error.message;
@@ -41,13 +55,19 @@ export class AuthEffects {
 
     switch (error.status) {
       case 400:
-        return 'Некорректные данные для регистрации';
+        return 'Некорректные данные';
+      case 401:
+        return 'Неверный токен верификации';
+      case 403:
+        return 'Доступ запрещен';
+      case 404:
+        return 'Токен не найден';
       case 409:
-        return 'Пользователь с таким email или username уже существует';
+        return 'Пользователь уже существует';
       case 500:
         return 'Внутренняя ошибка сервера';
       default:
-        return 'Ошибка при регистрации. Попробуйте позже';
+        return 'Произошла ошибка. Попробуйте позже';
     }
   }
 }

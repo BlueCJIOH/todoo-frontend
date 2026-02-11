@@ -17,3 +17,23 @@ export const selectRegistrationError = createSelector(
     selectAuthState,
     (state: AuthState) => state.registrationError
 );
+
+export const selectIsVerifying = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.isVerifying
+  );
+  
+  export const selectVerificationSuccess = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.verificationSuccess
+  );
+  
+  export const selectVerificationError = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.verificationError
+  );
+  
+  export const selectIsAuthenticated = createSelector(
+    selectAuthState,
+    (state: AuthState) => state.isAuthenticated
+  );
