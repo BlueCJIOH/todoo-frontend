@@ -1,0 +1,37 @@
+<header class="bg-white text-blue-600 shadow-md-blue-600">
+    <div class="max-w-[1360px] mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-18">
+            <div>
+                <a href="/" class="text-2xl font-bold text-blue-600 hover:text-lime-500 transition-colors">
+                    ToDoo
+                </a>
+            </div>
+
+            <div class="flex space-x-8">
+                <a href="#" class="relative text-lg font-medium hover:text-lime-500 transition-colors group">
+                    Создать задание
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full"></span>
+                </a>
+                <a href="#" class="relative text-lg font-medium hover:text-lime-500 transition-colors group">
+                    Найти задания
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <a href="/login" class="flex items-center space-x-1 hover:text-lime-500 "
+            (mouseenter)="onHover(true)"
+            (mouseleave)="onHover(false)">
+                <img [ngSrc]="userProfileIcon" width="32" height="32" />
+                <div class="text-lg font-medium cursor-pointer transition-colors">
+                    Войти в аккаунт
+                    <span
+                    class="absolute bottom-0 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full"></span>
+                </div>
+            </a>
+        </div>
+    </div>
+</header>
