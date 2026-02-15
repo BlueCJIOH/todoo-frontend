@@ -10,7 +10,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import * as AuthActions from '../../../../features/auth/store/actions/auth.actions';
 import * as AuthSelectors from '../../../../features/auth/store/selectors/auth.selectors';
 import { RegistrationRequest } from '../../../../features/auth/store/model/auth.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-registration-form',
@@ -31,12 +31,12 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
 
   // Состояние из Store
   isLoading$: Observable<boolean>;
-  //isVerifying$: Observable<boolean>;
+  isVerifying$: Observable<boolean>;
   registrationSuccess$: Observable<boolean>;
-  //verificationSuccess$: Observable<boolean>;
+  verificationSuccess$: Observable<boolean>;
   registrationError$: Observable<string | null>;
-  //verificationError$: Observable<string | null>;
-  //isAuthenticated$: Observable<boolean>;
+  verificationError$: Observable<string | null>;
+  isAuthenticated$: Observable<boolean>;
 
   public registrationForm: FormGroup<{
     name: FormControl<string>;
@@ -79,39 +79,105 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(AuthSelectors.selectIsLoading);
     this.registrationSuccess$ = this.store.select(AuthSelectors.selectRegistrationSuccess);
     this.registrationError$ = this.store.select(AuthSelectors.selectRegistrationError);
+    this.isVerifying$ = this.store.select(AuthSelectors.selectIsVerifying);
+    this.verificationError$ = this.store.select(AuthSelectors.selectVerificationError);
+    this.isAuthenticated$ = this.store.select(AuthSelectors.selectIsAuthenticated);
+    this.verificationSuccess$ = this.store.select(AuthSelectors.selectVerificationSuccess);
   }
 
   public ngOnInit(): void {
+    console.log('🚀 RegistrationPageComponent initialized');
+
+    // ✅ Подписка на успешную регистрацию
     this.registrationSuccess$
       .pipe(takeUntil(this.destroy$))
       .subscribe(success => {
         if (success) {
-          console.log('Registration successful!');
+          console.log('✅ Registration successful!');
+          console.log('📋 User needs to check email for verification link');
         }
       });
 
+    // ✅ Подписка на ошибку регистрации
+    this.registrationError$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(error => {
+        if (error) {
+          console.error('❌ Registration error:', error);
+        }
+      });
+
+    // ✅ Подписка на успешную верификацию
+    this.verificationSuccess$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(success => {
+        if (success) {
+          console.log('✅ Verification successful!');
+          console.log('🔑 User is now authenticated');
+
+          // Перенаправляем на главную или дашборд
+          // setTimeout(() => {
+          //   console.log('➡️ Redirecting to home page...');
+          //   this.router.navigate(['/']);
+          // }, 2000);
+        }
+      });
+
+    // ✅ Подписка на ошибку верификации
+    this.verificationError$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(error => {
+        if (error) {
+          console.error('❌ Verification error:', error);
+        }
+      });
+
+    // ✅ Подписка на изменение состояния аутентификации
+    this.isAuthenticated$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isAuthenticated => {
+        console.log('🔐 isAuthenticated:', isAuthenticated);
+      });
+
+    // ✅ Обработка query params для верификации
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
         const verifyToken = params['token'];
+
         if (verifyToken) {
-          // Dispatch верификации
+          console.log('📨 Verification token received:', verifyToken.substring(0, 20) + '...');
+          console.log('📤 Dispatching verify action...');
+
           this.store.dispatch(AuthActions.verify({ verifyToken }));
+
+          console.log('✅ Verify action dispatched');
+        } else {
+          console.log('ℹ️ No verification token in URL');
         }
       });
 
-    // ✅ Перенаправление после успешной верификации
-    // this.verificationSuccess$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(success => {
-    //     if (success) {
-    //       console.log('Verification successful!');
-    //       // Перенаправляем на главную или дашборд
-    //       setTimeout(() => {
-    //         this.router.navigate(['/']);
-    //       }, 2000);
-    //     }
-    //   });
+    // ✅ Подписка на состояние загрузки
+    this.isLoading$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isLoading => {
+        if (isLoading) {
+          console.log('⏳ Registration request in progress...');
+        } else {
+          console.log('✅ Registration request completed');
+        }
+      });
+
+    // ✅ Подписка на состояние верификации
+    this.isVerifying$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isVerifying => {
+        if (isVerifying) {
+          console.log('⏳ Verification request in progress...');
+        } else {
+          console.log('✅ Verification request completed');
+        }
+      });
   }
 
   public ngOnDestroy(): void {
@@ -160,14 +226,6 @@ export class RegistrationPageComponent implements OnInit, OnDestroy {
     };
 
     this.store.dispatch(AuthActions.register({ credentials: formData }));
-  }
-
-  /**
-   * Сброс состояния после успешной регистрации
-   */
-  public onResetForm(): void {
-    this.store.dispatch(AuthActions.resetRegistrationState());
-    this.registrationForm.reset();
   }
 
   /**
