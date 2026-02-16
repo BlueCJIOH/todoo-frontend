@@ -1,5 +1,3 @@
-// src/app/components/registration/registration-page.component.ts
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgOptimizedImage, AsyncPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, ValidationErrors } from '@angular/forms';

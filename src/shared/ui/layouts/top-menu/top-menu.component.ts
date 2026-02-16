@@ -6,13 +6,14 @@ import { Component } from '@angular/core';
   imports: [NgOptimizedImage],
   templateUrl: './top-menu.component.html',
   styleUrl: './top-menu.component.scss',
+  standalone: true
 })
 export class TopMenuComponent {
   public userProfileIcon: string = "assets/icons/user-profile-blue.svg";
 
   public onHover(isHovering: boolean): void {
-    this.userProfileIcon = isHovering 
-    ? 'assets/icons/user-profile-lime.svg' 
+    this.userProfileIcon = isHovering
+    ? 'assets/icons/user-profile-lime.svg'
     : 'assets/icons/user-profile-blue.svg';
   }
 }
