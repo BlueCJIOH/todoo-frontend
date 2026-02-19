@@ -2,10 +2,11 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-
 import { authReducer } from '../features/auth/store/reducers/auth.reducer';
 import { routes } from './app.routes';
 import { AuthEffects } from '../features/auth/store/effects/auth.effects';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {httpErrorInterceptorInterceptor} from '../shared/lib/interceptors/http-error-interceptor-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,9 @@ export const appConfig: ApplicationConfig = {
         strictActionImmutability: true,
       }
     }),
+    provideHttpClient(
+      withInterceptors([httpErrorInterceptorInterceptor])
+    ),
     provideEffects([AuthEffects])
   ]
 };

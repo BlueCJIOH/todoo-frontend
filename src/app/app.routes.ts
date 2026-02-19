@@ -1,34 +1,14 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from '../pages/home/ui/home-page/home-page.component';
-import { LoginPageComponent } from '../pages/login/ui/login-page/login-page.component.js'
-import { RegistrationPageComponent } from '../pages/registration/ui/registration-page/registration-page.component';
 import { NotFoundPageComponent } from '../pages/not-found/ui/not-found-page/not-found-page.component';
-import { ForgotPasswordPageComponent } from '../pages/forgot-password/ui/forgot-password-page/forgot-password-page.component';
+import {authRoutes} from './routes/auth.routes';
+import {mainLayoutRoutes} from './routes/main-layout.routes';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomePageComponent,
-    title: 'ToDoo',
-  },
-  {
-    path: 'login',
-    component: LoginPageComponent,
-    title: 'Login',
-  },
-  {
-    path: 'registration',
-    component: RegistrationPageComponent,
-    title: 'Registration',
-  },
-  {
-    path: 'forgot-password',
-    component: ForgotPasswordPageComponent,
-    title: 'Registration',
-  },
+    ...authRoutes,
+    ...mainLayoutRoutes,
   {
     path: '**',
     component: NotFoundPageComponent,
-    title: '404 - Not Found',
+    title: 'Not Found',
   },
 ];
