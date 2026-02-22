@@ -1,6 +1,4 @@
-// button.component.ts
 import { Component, EventEmitter, Input, Output, HostBinding } from '@angular/core';
-import { NgClass } from '@angular/common';
 import { ButtonVariant, ButtonSize, ButtonType } from './button.types';
 
 @Component({
@@ -8,7 +6,7 @@ import { ButtonVariant, ButtonSize, ButtonType } from './button.types';
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   standalone: true,
-  imports: [NgClass]
+  imports: []
 })
 export class ButtonComponent {
   // Входные параметры
@@ -68,7 +66,7 @@ export class ButtonComponent {
   private getVariantClasses(): string {
     const map: Record<ButtonVariant, string> = {
       primary: 'bg-lime-400 text-black hover:bg-lime-500 focus:ring-2 focus:ring-lime-400 focus:ring-offset-2',
-      toggle: 'bg-transparent text-gray-500 hover:bg-gray-100',
+      toggle: 'bg-transparent text-gray-500',
       filter: 'bg-white border border-lime-400 text-gray-600 hover:bg-lime-100 focus:ring-2 focus:ring-lime-400 focus:ring-offset-2 rounded-full',
       secondary: 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
     };

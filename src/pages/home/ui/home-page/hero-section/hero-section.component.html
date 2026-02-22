@@ -1,3 +1,4 @@
+<!-- hero-section.component.html -->
 <section class="reveal py-16 md:py-20">
   <div class="container mx-auto px-4 max-w-7xl">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -5,39 +6,42 @@
       <!-- Hero Copy -->
       <div class="bg-white border border-blue-500 rounded-2xl shadow-lg p-8 md:p-10">
         <h1 id="hero-title" class="font-sora text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 max-w-2xl">
-          Найдите надежного исполнителя для любой задачи
+          {{ heroTitle }}
         </h1>
         <p class="text-gray-600 mb-6 max-w-2xl">
-          Концепция главной страницы с четким фокусом: один вход для заказчиков, отдельный путь для исполнителей и лента задач от реальных клиентов.
+          Концепция главной страницы с четким фокусом: один вход для заказчиков, отдельный путь для исполнителей и лента
+          задач от реальных клиентов.
         </p>
 
-        <!-- Role Toggle -->
-        <div class="inline-flex gap-2 mb-6 bg-lime-100 rounded-lg p-1" id="role-toggle">
-          <button class="role-btn is-active bg-white text-gray-900 font-bold py-2 px-4 rounded-md shadow-sm" data-role="customer" type="button">
-            Я заказчик
-          </button>
-          <button class="role-btn text-gray-500 font-bold py-2 px-4 rounded-md bg-transparent" data-role="performer" type="button">
-            Я исполнитель
-          </button>
-        </div>
+
+        <app-slide-toggle
+          [options]="roleOptions"
+          [(selected)]="selectedRole"
+          (optionClicked)="onRoleClick($event)"
+          class="mb-6"
+        ></app-slide-toggle>
 
         <!-- Hero Form -->
-        <form class="flex flex-col sm:flex-row gap-3 mb-6">
+        <form class="flex flex-col sm:flex-row gap-3 mt-4 mb-6">
           <input
             type="text"
             placeholder="Например: Спасти вечер и собрать шкаф"
             class="flex-1 border border-gray-300 bg-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
           >
-          <app-button variant="primary" size="md">
-            Опубликовать задачу
+          <app-button
+            variant="primary"
+            size="md"
+          >
+            {{ ctaText }}
           </app-button>
         </form>
       </div>
 
-      <!-- Hero Side -->
+      <!-- Hero Side (без изменений) -->
       <div class="grid gap-4">
         <!-- Hero Panel -->
-        <aside class="bg-gradient-to-br from-blue-900 to-blue-400 text-white border border-lime-500 rounded-2xl shadow-lg p-7 md:p-8">
+        <aside
+          class="bg-gradient-to-br from-blue-900 to-blue-400 text-white border border-lime-500 rounded-2xl shadow-lg p-7 md:p-8">
           <h2 class="font-sora text-2xl font-bold mb-4">Быстрый сценарий публикации</h2>
           <ol class="list-decimal pl-5 space-y-2 mb-0">
             <li>Опишите задачу в одну строку.</li>

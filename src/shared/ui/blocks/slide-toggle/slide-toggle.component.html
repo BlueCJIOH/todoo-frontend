@@ -1,0 +1,30 @@
+<div
+  class="relative inline-flex bg-lime-100 rounded-lg p-1"
+  [class]="getContainerClasses()"
+  [class.opacity-50]="disabled"
+>
+
+  <div class="absolute bg-white rounded-md shadow-md transition-transform duration-300 ease-in-out z-0"
+       [style.transform]="getSliderTransform()"
+       [style.left.px]="2"
+       [style.right.px]="2"
+       [style.top.px]="2"
+       [style.bottom.px]="2"
+       [style.width.%]="99 / options.length"
+  ></div>
+
+  @for (option of options; track $index) {
+    <ng-container>
+      <button
+        type="button"
+        (click)="selectOption(option)"
+        [disabled]="disabled"
+        class="relative z-10 flex-1 py-1 px-1 text-sm font-bold rounded-md transition-colors duration-200 focus:outline-none focus:ring-0 focus:ring-offset-0"
+        [class]="getOptionClasses(option)"
+        [attr.aria-pressed]="selected === option.value"
+      >
+        {{ option.label }}
+      </button>
+    </ng-container>
+  }
+</div>
