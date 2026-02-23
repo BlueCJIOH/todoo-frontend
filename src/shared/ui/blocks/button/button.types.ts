@@ -1,8 +1,8 @@
 export type ButtonVariant =
-  | 'primary'    // Основная кнопка (лаймовый фон)
-  | 'toggle'     // Кнопка-переключатель
-  | 'filter'     // Фильтр
-  | 'secondary'; // Второстепенная кнопка
+  | 'primary'
+  | 'filter'
+  | 'filter_active'
+  | 'secondary';
 
 export type ButtonSize =
   | 'sm'
